@@ -400,11 +400,17 @@ class Editor {
         const panel = document.getElementById('tool-properties');
         panel.innerHTML = '';
         
+        // Specific check for Blur tool
+        if (this.activeTool === 'blur') {
+             panel.innerHTML = '<div class="property-group default-msg">Blur Mode Active</div>';
+             return;
+        }
+        
         let tmplId = '';
         let target = null; // What object are we modifying?
 
         // 1. Check Active Tool
-        if (['rect', 'circle', 'blur'].includes(this.activeTool)) {
+        if (['rect', 'circle'].includes(this.activeTool)) {
             tmplId = 'tmpl-shape-props';
             target = this.props; // Modifying global defaults
         } else if (this.activeTool === 'crop') {

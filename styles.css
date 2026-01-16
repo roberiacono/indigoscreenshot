@@ -48,18 +48,26 @@ body {
     margin-right: 16px;
 }
 
-.tool-properties {
+#tool-properties {
     flex: 1;
-    display: flex;
+    display: flex; /* Force override if something weird is happening */
     align-items: center;
     gap: 24px;
     font-size: 0.85rem;
+    height: 100%;
 }
 
 .property-group {
     display: flex;
     align-items: center;
     gap: 8px;
+    height: 100%; /* Ensure full height */
+}
+
+.prop-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .default-msg {
@@ -192,6 +200,17 @@ input[type="number"] {
 
 .action-btn.danger { background-color: var(--danger-color); }
 .action-btn.danger:hover { background-color: #dc2626; }
+
+.action-btn.primary { background-color: var(--primary-color); }
+.action-btn.primary:hover { background-color: var(--primary-hover); }
+
+.action-btn.secondary { 
+    background-color: var(--surface-hover); 
+    color: var(--text-color);
+}
+.action-btn.secondary:hover { 
+    background-color: var(--border-color); 
+}
 
 .action-btn.outline {
     background-color: transparent;
