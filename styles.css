@@ -137,19 +137,19 @@ body {
         linear-gradient(-45deg, transparent 75%, #16181d 75%);
     background-size: 20px 20px;
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-    overflow: hidden; /* Prevent scrollbars, use custom pan */
-    position: relative; /* Anchor for absolute wrapper */
-    display: block; /* Remove flex centering */
+    overflow: auto; /* Enable native scrollbars */
+    position: relative;
+    display: grid; /* Center content */
+    place-items: center;
     padding: 0;
 }
 
 .canvas-wrapper {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     line-height: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative; /* Changed from absolute for scroll flow */
     transform-origin: 0 0;
+    /* transition: width 0.1s, height 0.1s; */ 
 }
 
 /* Inputs */

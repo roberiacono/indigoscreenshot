@@ -279,8 +279,6 @@ class Editor {
 
     fitToScreen() {
         const padding = 40;
-        // The wrapper will expand to fit the canvas, so we must measure the CONTAINER (canvas-area)
-        // to check how much viewport space we actually have.
         const container = this.wrapper.parentElement; 
         
         const availableW = container.clientWidth - padding * 2;
@@ -292,18 +290,28 @@ class Editor {
         const scale = Math.min(scaleW, scaleH, 1); 
         
         this.viewport.scale = scale;
-        // Center within available space
-        // We use container.clientWidth because wrapper is just tight around canvas
-        this.viewport.offsetX = (container.clientWidth - this.canvas.width * scale) / 2;
-        this.viewport.offsetY = (container.clientHeight - this.canvas.height * scale) / 2;
+        // Offsets handled by CSS Grid centering + Scrollbars
+        this.viewport.offsetX = 0;
+        this.viewport.offsetY = 0;
         
         this.updateTransform();
         this.render();
     }
 
     updateTransform() {
-        this.canvas.style.transformOrigin = '0 0'; // Enforce origin
-        this.canvas.style.transform = `translate(${this.viewport.offsetX}px, ${this.viewport.offsetY}px) scale(${this.viewport.scale})`;
+        // Enforce origin
+        this.canvas.style.transformOrigin = '0 0'; 
+        
+        // Scale the canvas visually
+        this.canvas.style.transform = `scale(${this.viewport.scale})`;
+        
+        // Resize wrapper to force scrollbars on parent
+        const scaledWidth = this.canvas.width * this.viewport.scale;
+        const scaledHeight = this.canvas.height * this.viewport.scale;
+        
+        this.wrapper.style.width = `${scaledWidth}px`;
+        this.wrapper.style.height = `${scaledHeight}px`;
+
         document.getElementById('zoomLevel').textContent = `${Math.round(this.viewport.scale * 100)}%`;
     }
 
@@ -516,9 +524,19 @@ class Editor {
             return;
         }
 
-        if (!e.target.closest('#canvas-wrapper')) return;
+        // Ignore clicks on UI elements
+        if (e.target.closest('.properties-bar') || e.target.closest('.tools-panel')) return;
 
-        const pos = this.getMousePos(e);
+        if (!e.target.closest('#canvas-wrapper') && this.activeTool !== 'crop') return;
+
+        let pos = this.getMousePos(e);
+        
+        // Clamp for crop tool start
+        if (this.activeTool === 'crop') {
+            pos.x = Math.max(0, Math.min(pos.x, this.canvas.width));
+            pos.y = Math.max(0, Math.min(pos.y, this.canvas.height));
+        }
+
         this.state.isDragging = true;
         this.state.startX = pos.x;
         this.state.startY = pos.y;
@@ -575,9 +593,12 @@ class Editor {
         if (this.state.isPanDragging) {
             const dx = e.clientX - this.state.panStartX;
             const dy = e.clientY - this.state.panStartY;
-            this.viewport.offsetX += dx;
-            this.viewport.offsetY += dy;
-            this.updateTransform();
+            
+            // Pan by scrolling the container
+            const container = this.wrapper.parentElement;
+            container.scrollLeft -= dx;
+            container.scrollTop -= dy;
+
             this.state.panStartX = e.clientX;
             this.state.panStartY = e.clientY;
             return;
@@ -677,8 +698,20 @@ class Editor {
                 this.render();
             }
         } else if (this.activeTool === 'crop' && this.cropSelection) {
-            this.cropSelection.w = pos.x - this.cropSelection.x;
-            this.cropSelection.h = pos.y - this.cropSelection.y;
+            // Clamp mouse pos to boundaries for display and selection
+            const cx = Math.max(0, Math.min(pos.x, this.canvas.width));
+            const cy = Math.max(0, Math.min(pos.y, this.canvas.height));
+            
+            this.cropSelection.w = cx - this.cropSelection.x;
+            this.cropSelection.h = cy - this.cropSelection.y;
+            
+            const dimEl = document.getElementById('crop-dimensions');
+            if (dimEl) {
+                const w = Math.abs(this.cropSelection.w);
+                const h = Math.abs(this.cropSelection.h);
+                dimEl.textContent = `${Math.round(w)} x ${Math.round(h)} px`;
+            }
+            
             this.render();
         } else if (this.currentLayer) {
             if(this.currentLayer.type === 'blur_selection' || this.currentLayer instanceof ShapeLayer) {
