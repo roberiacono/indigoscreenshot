@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "SnapEdit - Screenshot & Editor",
+  "name": "IndigoScreenshot",
   "version": "1.0",
   "description": "Capture the visible page and edit it instantly.",
   "permissions": [

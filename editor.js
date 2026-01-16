@@ -66,7 +66,7 @@ class ShapeLayer extends Layer {
         this.y = y;
         this.width = w;
         this.height = h;
-        this.stroke = options.stroke || '#ef4444';
+        this.stroke = options.stroke || '#7c86ff';
         this.strokeWidth = options.strokeWidth || 4;
         this.fill = options.fill || null;
     }
@@ -190,7 +190,7 @@ class Editor {
 
         // Properties
         this.props = {
-            color: '#ef4444',
+            color: '#7c86ff',
             strokeWidth: 4,
             fill: null
         };
@@ -897,7 +897,7 @@ class Editor {
 
     download() {
         const link = document.createElement('a');
-        link.download = `snapedit-${Date.now()}.png`;
+        link.download = `indigo-screenshot-${Date.now()}.png`;
         
         const wasSelected = this.selectedLayer;
         if(wasSelected) {
