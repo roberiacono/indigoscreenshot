@@ -1,0 +1,219 @@
+:root {
+    --primary-color: #6366f1;
+    --primary-hover: #4f46e5;
+    --bg-color: #0f172a;
+    --surface-color: #1e293b;
+    --surface-hover: #334155;
+    --text-color: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --danger-color: #ef4444;
+    --success-color: #22c55e;
+    
+    --header-height: 50px;
+    --sidebar-width: 60px;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #121212; /* Darker background for canvas area */
+    color: var(--text-color);
+    overflow: hidden;
+    height: 100vh;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Header / Properties Bar */
+.properties-bar {
+    height: var(--header-height);
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 16px;
+    z-index: 10;
+}
+
+.logo {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--primary-color);
+    margin-right: 16px;
+}
+
+.tool-properties {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 0.85rem;
+}
+
+.property-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.default-msg {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Main Workspace */
+.main-workspace {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* Tools Panel (Sidebar) */
+.tools-panel {
+    width: var(--sidebar-width);
+    background-color: var(--surface-color);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 0;
+    gap: 8px;
+    z-index: 10;
+}
+
+.separator {
+    width: 60%;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 4px 0;
+}
+
+.tool-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tool-btn:hover {
+    background-color: var(--surface-hover);
+    color: var(--text-color);
+}
+
+.tool-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Canvas Area */
+.canvas-area {
+    flex: 1;
+    background-color: #0f1216;
+    background-image: 
+        linear-gradient(45deg, #16181d 25%, transparent 25%), 
+        linear-gradient(-45deg, #16181d 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #16181d 75%), 
+        linear-gradient(-45deg, transparent 75%, #16181d 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.canvas-wrapper {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    line-height: 0;
+}
+
+/* Inputs */
+input[type="color"] {
+    -webkit-appearance: none;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 0;
+    background: none;
+}
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+input[type="color"]::-webkit-color-swatch { border: 2px solid var(--border-color); border-radius: 50%; }
+
+input[type="range"] {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border-color);
+    outline: none;
+}
+
+input[type="number"] {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 4px;
+    padding: 4px 8px;
+    width: 50px;
+}
+
+/* Buttons */
+.action-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    color: white;
+}
+.action-btn.success { background-color: var(--success-color); }
+.action-btn.success:hover { background-color: #16a34a; }
+
+.action-btn.danger { background-color: var(--danger-color); }
+.action-btn.danger:hover { background-color: #dc2626; }
+
+.action-btn.outline {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+.action-btn.outline:hover {
+    border-color: var(--text-muted);
+    background-color: var(--surface-hover);
+}
+
+/* Specific Tweak for Top Bar buttons to look good */
+.tool-properties .action-btn {
+    padding: 6px 12px;
+    height: 32px;
+    font-size: 0.8rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    transition: transform 0.1s, background-color 0.2s;
+}
+.tool-properties .action-btn:active {
+    transform: translateY(1px);
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

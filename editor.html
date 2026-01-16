@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapEdit - Pro Editor</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Properties Bar -->
+    <header class="properties-bar">
+      <div class="logo">SnapEdit</div>
+      
+      <div id="tool-properties" class="tool-properties">
+        <!-- Dynamic properties injected here -->
+        <div class="property-group default-msg">Select a tool to edit properties</div>
+      </div>
+
+      <div class="scale-controls" style="display: flex; align-items: center; gap: 8px; margin-right: 16px; font-size: 0.85rem; color: var(--text-muted);">
+          <button id="btnZoomOut" class="tool-btn" style="width: 24px; height: 24px;">-</button>
+          <span id="zoomLevel">100%</span>
+          <button id="btnZoomIn" class="tool-btn" style="width: 24px; height: 24px;">+</button>
+          <button id="btnFit" class="tool-btn" style="width: auto; padding: 0 8px; font-size: 0.75rem;">Fit</button>
+      </div>
+
+      <div class="history-controls" style="display: flex; align-items: center; gap: 8px; margin-right: 16px;">
+          <button id="btnUndo" class="tool-btn" title="Undo (Ctrl+Z)" style="width: 24px; height: 24px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg>
+          </button>
+          <button id="btnRedo" class="tool-btn" title="Redo (Ctrl+Y)" style="width: 24px; height: 24px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"></path><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"></path></svg>
+          </button>
+      </div>
+
+      <div class="actions">
+        <button id="btnDownload" class="action-btn success">
+          <span>Download</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="main-workspace">
+      <!-- Left Tools Panel -->
+      <aside class="tools-panel">
+        <button class="tool-btn active" data-tool="select" title="Move (V)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"></path><path d="M13 13l6 6"></path></svg>
+        </button>
+        
+        <button class="tool-btn" data-tool="crop" title="Crop (C)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.13 1L6 16a2 2 0 0 0 2 2h15"></path><path d="M1 6.13L16 6a2 2 0 0 1 2 2v15"></path></svg>
+        </button>
+
+
+
+        <div class="separator"></div>
+
+        <button class="tool-btn" data-tool="rect" title="Rectangle (R)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+        </button>
+
+        <button class="tool-btn" data-tool="circle" title="Circle (O)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+        </button>
+        
+        <div class="separator"></div>
+
+        <button class="tool-btn" data-tool="blur" title="Blur (B)">
+           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v5m0 4v8"/><path d="M5.641 5.631a9 9 0 1 0 12.719 12.738m1.68 -2.318a9 9 0 0 0 -12.074 -12.098"/><path d="M16 12h5"/><path d="M13 9h7"/><path d="M12 6h6"/><path d="M12 18h6"/><path d="M12 15h3m4 0h1"/><path d="M3 3l18 18"/></svg>
+        </button>
+
+      </aside>
+
+      <!-- Canvas Area -->
+      <main class="canvas-area">
+        <div id="canvas-wrapper" class="canvas-wrapper">
+          <canvas id="canvas"></canvas>
+        </div>
+      </main>
+      
+    </div>
+  </div>
+
+
+
+  <template id="tmpl-crop-props">
+      <div class="prop-group">
+          <span style="color: var(--text-color); font-weight: 500;">Crop Mode</span>
+      </div>
+      <div class="prop-group">
+          <button id="btn-apply-crop" class="action-btn success">
+            <span>Apply</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </button>
+          <button id="btn-cancel-crop" class="action-btn danger">
+            <span>Cancel</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+      </div>
+  </template>
+  <!-- Templates for Tool Properties -->
+  <template id="tmpl-shape-props">
+      <div class="prop-group">
+        <label>Stroke</label>
+        <input type="color" id="prop-stroke" value="#ef4444">
+      </div>
+      <div class="prop-group">
+          <label>Width</label>
+          <input type="range" id="prop-width" min="1" max="20" value="4">
+          <span id="prop-width-val">4px</span>
+      </div>
+      <div class="prop-group">
+          <label>Fill</label>
+          <div class="checkbox-wrapper">
+              <input type="checkbox" id="prop-fill-enabled">
+              <input type="color" id="prop-fill" value="#ef4444" disabled>
+          </div>
+      </div>
+  </template>
+  <script src="editor.js"></script>
+</body>
+</html>
