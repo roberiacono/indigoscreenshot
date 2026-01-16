@@ -1,5 +1,4 @@
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === 'capture') {
+chrome.action.onClicked.addListener((tab) => {
     chrome.tabs.captureVisibleTab(null, { format: 'png' }, (dataUrl) => {
       if (chrome.runtime.lastError) {
         console.error('Screenshot failed:', chrome.runtime.lastError.message);
@@ -11,5 +10,4 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         chrome.tabs.create({ url: 'editor.html' });
       });
     });
-  }
 });
