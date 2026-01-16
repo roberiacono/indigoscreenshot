@@ -279,8 +279,12 @@ class Editor {
 
     fitToScreen() {
         const padding = 40;
-        const availableW = this.wrapper.clientWidth - padding * 2;
-        const availableH = this.wrapper.clientHeight - padding * 2;
+        // The wrapper will expand to fit the canvas, so we must measure the CONTAINER (canvas-area)
+        // to check how much viewport space we actually have.
+        const container = this.wrapper.parentElement; 
+        
+        const availableW = container.clientWidth - padding * 2;
+        const availableH = container.clientHeight - padding * 2;
         
         const scaleW = availableW / this.canvas.width;
         const scaleH = availableH / this.canvas.height;
@@ -288,14 +292,17 @@ class Editor {
         const scale = Math.min(scaleW, scaleH, 1); 
         
         this.viewport.scale = scale;
-        this.viewport.offsetX = (this.wrapper.clientWidth - this.canvas.width * scale) / 2;
-        this.viewport.offsetY = (this.wrapper.clientHeight - this.canvas.height * scale) / 2;
+        // Center within available space
+        // We use container.clientWidth because wrapper is just tight around canvas
+        this.viewport.offsetX = (container.clientWidth - this.canvas.width * scale) / 2;
+        this.viewport.offsetY = (container.clientHeight - this.canvas.height * scale) / 2;
         
         this.updateTransform();
         this.render();
     }
 
     updateTransform() {
+        this.canvas.style.transformOrigin = '0 0'; // Enforce origin
         this.canvas.style.transform = `translate(${this.viewport.offsetX}px, ${this.viewport.offsetY}px) scale(${this.viewport.scale})`;
         document.getElementById('zoomLevel').textContent = `${Math.round(this.viewport.scale * 100)}%`;
     }
@@ -317,7 +324,8 @@ class Editor {
         window.addEventListener('mousemove', this.onMouseMove.bind(this));
         window.addEventListener('mouseup', this.onMouseUp.bind(this));
         
-        this.wrapper.addEventListener('wheel', (e) => {
+        // Use parentElement (canvas-area) for wheel zoom to work anywhere in the viewport
+        this.wrapper.parentElement.addEventListener('wheel', (e) => {
             if (e.ctrlKey || e.metaKey) {
                 e.preventDefault();
                 const delta = e.deltaY > 0 ? -0.1 : 0.1;

@@ -129,16 +129,19 @@ body {
         linear-gradient(-45deg, transparent 75%, #16181d 75%);
     background-size: 20px 20px;
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-    overflow: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
+    overflow: hidden; /* Prevent scrollbars, use custom pan */
+    position: relative; /* Anchor for absolute wrapper */
+    display: block; /* Remove flex centering */
+    padding: 0;
 }
 
 .canvas-wrapper {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     line-height: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
 }
 
 /* Inputs */
